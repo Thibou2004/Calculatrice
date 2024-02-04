@@ -81,6 +81,7 @@ button:hover{
 #entrer-operation{
     grid-column: 4 / 5;
     grid-row: 4 / 6;
+    background-color: #4d5053;
 }
 
 #nombre-0 {
