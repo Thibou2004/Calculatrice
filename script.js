@@ -88,16 +88,20 @@ function calculatrice(){
         operation = "";
         afficherOperation(0, operation)
       })
-
-    let virgule = document.getElementById("virgule");
+     
+      let nombre0 = document.getElementById("nombre-0")
+      let virgule = document.getElementById("virgule");
 
     virgule.addEventListener("click", () => {
       if(verificationOperationPrecedente !== true){
         let dernierCharacter = operation[operation.length - 1];
+        if(dernierCharacter === undefined)
+            dernierCharacter = "";
+
         if(dernierCharacter != "."){
-          if(dernierCharacter == "*" || dernierCharacter == "/" || dernierCharacter == "+" || dernierCharacter == "-"){
-            operation += `0${virgule.value}`;
-          afficherOperation(`0${virgule.value}`, operation)
+          if(dernierCharacter == "x" || dernierCharacter == "/" || dernierCharacter == "+" || dernierCharacter == "-" || dernierCharacter == ""){
+            operation += `${nombre0.value}${virgule.value}`;
+          afficherOperation(`${virgule.value}`, operation)
           }
           else{
           operation += virgule.value;
@@ -109,13 +113,20 @@ function calculatrice(){
 
     
 
-    let nombre0 = document.getElementById("nombre-0")
-
+    
     nombre0.addEventListener("click", () => {
+      let dernierCharacter = operation[operation.length - 1];
+          if(dernierCharacter === undefined)
+            dernierCharacter = "";
+
           if(verificationOperationPrecedente === true){
             operation = "0";
             verificationOperationPrecedente = false;
             afficherOperation("0", operation)
+          }
+          else if(dernierCharacter == "x" || dernierCharacter == "/" || dernierCharacter == "+" || dernierCharacter == "-" || dernierCharacter == ""){
+            operation += `${nombre0.value}${virgule.value}`;
+            afficherOperation(`${nombre0.value}`, operation);
           }  
           else if(operation != "0"){
             operation += "0";
