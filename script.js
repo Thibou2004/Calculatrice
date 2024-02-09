@@ -31,7 +31,6 @@ function verifierOperation(operation){
       return x;
    }).join('');
    
-   console.log(newOperation);
    return expression.test(newOperation) ||regexNbScientifique;
 
 }
@@ -56,14 +55,19 @@ function calculatrice(){
     let operateur = document.querySelectorAll(".operateur");
     for(let i = 0; i < operateur.length; i++){
         operateur[i].addEventListener("click", () => {
+          let dernierCharacter = operation[operation.length - 1];
+          if(dernierCharacter === undefined)
+            dernierCharacter = "";
+      
+          if(dernierCharacter != "x" && dernierCharacter != "/" && dernierCharacter != "+" && dernierCharacter != "-" && dernierCharacter != ""){
             if(verificationOperationPrecedente === true)
             verificationOperationPrecedente = false;
-
+            
             let affichageResultat = document.getElementById("affichage-resultat");
             if(affichageResultat.textContent !== "0" && operation == ""){
-               operation = affichageResultat.textContent;
-               operation += operateur[i].value;
-               afficherOperation(operateur[i].value, operation)
+              operation = affichageResultat.textContent;
+              operation += operateur[i].value;
+              afficherOperation(operateur[i].value, operation)
             }
             else{
               if(operation == ""){
@@ -75,6 +79,7 @@ function calculatrice(){
               afficherOperation(operateur[i].value, operation)
               }
             }
+          } 
         });
     }
 
@@ -147,7 +152,6 @@ function calculatrice(){
                   return x;
                }).join('');
 
-            console.log(newOperation);
             afficherOperation(eval(newOperation), `${operation}=${eval(newOperation)}`)
             operation = `${eval(newOperation)}`;
             verificationOperationPrecedente = true;

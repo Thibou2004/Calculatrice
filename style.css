@@ -57,7 +57,7 @@ button:hover{
 }
 
 #affichage-resultat, #affichage-operation{
-    color: white;
+    color: #ff944d;
     text-align: start;
     font-size: 1.5em;
 }
