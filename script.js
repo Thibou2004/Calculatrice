@@ -16,6 +16,8 @@ function afficherOperation(value, operation){
    affichageOperation.innerText = operation;
 }
 
+
+
 /**
  * Cette fonction permet de vérifier si le calcul a été correctement tapé
  * @param {string} operation 
@@ -58,28 +60,51 @@ function calculatrice(){
           let dernierCharacter = operation[operation.length - 1];
           if(dernierCharacter === undefined)
             dernierCharacter = "";
-      
-          if(dernierCharacter != "x" && dernierCharacter != "/" && dernierCharacter != "+" && dernierCharacter != "-" && dernierCharacter != ""){
-            if(verificationOperationPrecedente === true)
-            verificationOperationPrecedente = false;
-            
-            let affichageResultat = document.getElementById("affichage-resultat");
-            if(affichageResultat.textContent !== "0" && operation == ""){
-              operation = affichageResultat.textContent;
-              operation += operateur[i].value;
-              afficherOperation(operateur[i].value, operation)
-            }
-            else{
-              if(operation == ""){
-                operation += `0${operateur[i].value}`;
-                afficherOperation(`${operateur[i].value}`, operation)
+          
+          if(dernierCharacter == "x" || dernierCharacter == "/"){
+          
+             if(operateur[i].value == "+" || operateur[i].value == "-"){
+              if(verificationOperationPrecedente === true)
+                 verificationOperationPrecedente = false;
+              let affichageResultat = document.getElementById("affichage-resultat");
+              if(affichageResultat.textContent !== "0" && operation == ""){
+                operation = affichageResultat.textContent;
+                operation += operateur[i].value;
+                afficherOperation(operateur[i].value, operation)
               }
               else{
-              operation += operateur[i].value;
-              afficherOperation(operateur[i].value, operation)
+                if(operation == ""){
+                  operation += `0${operateur[i].value}`;
+                  afficherOperation(`${operateur[i].value}`, operation)
+                }
+                else{
+                operation += operateur[i].value;
+                afficherOperation(operateur[i].value, operation)
+                }
               }
             }
-          } 
+          }
+          else if(dernierCharacter != "x" && dernierCharacter != "/" && dernierCharacter != "+" && dernierCharacter != "-" && dernierCharacter != ""){
+            if(verificationOperationPrecedente === true)
+                verificationOperationPrecedente = false;
+              let affichageResultat = document.getElementById("affichage-resultat");
+              if(affichageResultat.textContent !== "0" && operation == ""){
+                operation = affichageResultat.textContent;
+                operation += operateur[i].value;
+                afficherOperation(operateur[i].value, operation)
+              }
+              else{
+                if(operation == ""){
+                  operation += `0${operateur[i].value}`;
+                  afficherOperation(`${operateur[i].value}`, operation)
+                }
+                else{
+                operation += operateur[i].value;
+                afficherOperation(operateur[i].value, operation)
+                }
+              }
+          }
+          
         });
     }
 
