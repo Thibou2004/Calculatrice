@@ -104,7 +104,7 @@ function calculatrice(){
                 }
               }
           }
-          else if(dernierCharacter == "" && operateur[i].value == "-" || operateur[i].value == "+"){
+          else if(dernierCharacter == "" && operateur[i].value == "-" && operateur[i].value == "+"){
             if(verificationOperationPrecedente === true)
                 verificationOperationPrecedente = false;
               let affichageResultat = document.getElementById("affichage-resultat");
