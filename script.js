@@ -159,6 +159,11 @@ function calculatrice(){
           }
         }
       }
+      else if(verificationOperationPrecedente === true){
+        verificationOperationPrecedente = false;
+        operation = `${nombre0.value}${virgule.value}`;
+        afficherOperation(`${nombre0.value}${virgule.value}`, operation)
+      }
     })
 
     
@@ -168,7 +173,7 @@ function calculatrice(){
       let dernierCharacter = operation[operation.length - 1];
           if(dernierCharacter === undefined)
             dernierCharacter = "";
-
+          
           if(verificationOperationPrecedente === true){
             operation = "0";
             verificationOperationPrecedente = false;

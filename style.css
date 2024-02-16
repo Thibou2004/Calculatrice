@@ -9,6 +9,7 @@ body{
     border: 1px solid lightslategray;
     margin: 150px auto 0 auto;
     background-color: black;
+    border-radius: 10px;
 }
 
 #console{
@@ -17,6 +18,7 @@ body{
     background-color: rgb(18, 18, 18);
     margin: 5px auto 0 auto;
     overflow-x: auto;
+    border-radius: 5px;
 }
 
 #affichage-operation{
@@ -36,6 +38,7 @@ button{
     border: none;
     border: 1px solid black;
     font-size: 18px;
+    border-radius: 5px;
 }
 
 button:hover{
