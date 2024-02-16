@@ -104,6 +104,26 @@ function calculatrice(){
                 }
               }
           }
+          else if(dernierCharacter == "" && operateur[i].value == "-" || operateur[i].value == "+"){
+            if(verificationOperationPrecedente === true)
+                verificationOperationPrecedente = false;
+              let affichageResultat = document.getElementById("affichage-resultat");
+              if(affichageResultat.textContent !== "0" && operation == ""){
+                operation = affichageResultat.textContent;
+                operation += operateur[i].value;
+                afficherOperation(operateur[i].value, operation)
+              }
+              else{
+                if(operation == ""){
+                  operation += `0${operateur[i].value}`;
+                  afficherOperation(`${operateur[i].value}`, operation)
+                }
+                else{
+                operation += operateur[i].value;
+                afficherOperation(operateur[i].value, operation)
+                }
+              }
+          }
           
         });
     }
