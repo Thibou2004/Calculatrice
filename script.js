@@ -53,6 +53,9 @@ function calculatrice(){
             afficherOperation(buttonNombres[i].value, operation)
         })
     }
+    let regexNumber = /^[0-9]{1,1}$/;
+    let regexOperateur1 = /^[x\/]{1,1}$/;
+    let regexOperateur2 = /^[+-]{1,1}$/;
 
     let operateur = document.querySelectorAll(".operateur");
     for(let i = 0; i < operateur.length; i++){
@@ -60,71 +63,30 @@ function calculatrice(){
           let dernierCharacter = operation[operation.length - 1];
           if(dernierCharacter === undefined)
             dernierCharacter = "";
-          
-          if(dernierCharacter == "x" || dernierCharacter == "/"){
-          
-             if(operateur[i].value == "+" || operateur[i].value == "-"){
-              if(verificationOperationPrecedente === true)
-                 verificationOperationPrecedente = false;
-              let affichageResultat = document.getElementById("affichage-resultat");
-              if(affichageResultat.textContent !== "0" && operation == ""){
-                operation = affichageResultat.textContent;
-                operation += operateur[i].value;
-                afficherOperation(operateur[i].value, operation)
-              }
-              else{
-                if(operation == ""){
-                  operation += `0${operateur[i].value}`;
-                  afficherOperation(`${operateur[i].value}`, operation)
-                }
-                else{
-                operation += operateur[i].value;
-                afficherOperation(operateur[i].value, operation)
-                }
-              }
-            }
-          }
-          else if(dernierCharacter != "x" && dernierCharacter != "/" && dernierCharacter != "+" && dernierCharacter != "-" && dernierCharacter != ""){
+           /*dernierCharacter == "x" || dernierCharacter == "/" */
+          if(regexOperateur1.test(dernierCharacter) && regexOperateur2.test(operateur[i].value)){
             if(verificationOperationPrecedente === true)
                 verificationOperationPrecedente = false;
-              let affichageResultat = document.getElementById("affichage-resultat");
-              if(affichageResultat.textContent !== "0" && operation == ""){
-                operation = affichageResultat.textContent;
-                operation += operateur[i].value;
-                afficherOperation(operateur[i].value, operation)
-              }
-              else{
-                if(operation == ""){
-                  operation += `0${operateur[i].value}`;
-                  afficherOperation(`${operateur[i].value}`, operation)
-                }
-                else{
-                operation += operateur[i].value;
-                afficherOperation(operateur[i].value, operation)
-                }
-              }
-          }
-          else if(dernierCharacter == "" && operateur[i].value == "-" && operateur[i].value == "+"){
+        
+            operation += operateur[i].value;
+            afficherOperation(operateur[i].value, operation)
+              
+          }/* dernierCharacter != "x" && dernierCharacter != "/" && dernierCharacter != "+" && dernierCharacter != "-" && dernierCharacter != "" */
+          else if(regexNumber.test(dernierCharacter)){
             if(verificationOperationPrecedente === true)
                 verificationOperationPrecedente = false;
-              let affichageResultat = document.getElementById("affichage-resultat");
-              if(affichageResultat.textContent !== "0" && operation == ""){
-                operation = affichageResultat.textContent;
-                operation += operateur[i].value;
-                afficherOperation(operateur[i].value, operation)
-              }
-              else{
-                if(operation == ""){
-                  operation += `0${operateur[i].value}`;
-                  afficherOperation(`${operateur[i].value}`, operation)
-                }
-                else{
-                operation += operateur[i].value;
-                afficherOperation(operateur[i].value, operation)
-                }
-              }
+
+            operation += operateur[i].value;
+            afficherOperation(operateur[i].value, operation)
+                
           }
-          
+          else if(operation == ""){
+            if(verificationOperationPrecedente === true)
+                verificationOperationPrecedente = false;
+  
+            operation += `0${operateur[i].value}`;
+            afficherOperation(`${operateur[i].value}`, operation)
+          }
         });
     }
 
@@ -162,7 +124,7 @@ function calculatrice(){
       else if(verificationOperationPrecedente === true){
         verificationOperationPrecedente = false;
         operation = `${nombre0.value}${virgule.value}`;
-        afficherOperation(`${nombre0.value}${virgule.value}`, operation)
+        afficherOperation(`${virgule.value}`, operation)
       }
     })
 
