@@ -37,6 +37,27 @@ function verifierOperation(operation){
 
 }
 
+/**
+ * Cette fonction va permettre de vérifier lorsque l'on
+ * clique sur le boutton virgule si le nombre qui est entrée
+ * a déja une virgule, si c'est le cas on ajoute pas de virgule.
+ * @param {string} operation
+ */
+function verifierVirgule(operation){
+  let regexOperateur = /^[x+-\/]{1,1}$/;
+  let regexVirgule = /^[\.]{1,1}$/;
+  for(let i = operation.length - 1; i >= 0; i--){
+      if(regexOperateur.test(operation[i]) && !regexVirgule.test(operation[i])){
+        return true;
+      }
+      else if(regexVirgule.test(operation[i])){
+        return false;
+      }
+    }
+  return true;
+}
+
+
 
 function calculatrice(){
     let buttonNombres = document.querySelectorAll(".nombre");
@@ -53,7 +74,7 @@ function calculatrice(){
             afficherOperation(buttonNombres[i].value, operation)
         })
     }
-    let regexNumber = /^[0-9]{1,1}$/;
+    let regexNumber = /^[0-9\.]{1,1}$/;
     let regexOperateur1 = /^[x\/]{1,1}$/;
     let regexOperateur2 = /^[+-]{1,1}$/;
 
@@ -105,27 +126,28 @@ function calculatrice(){
       let virgule = document.getElementById("virgule");
 
     virgule.addEventListener("click", () => {
-      if(verificationOperationPrecedente !== true){
-        let dernierCharacter = operation[operation.length - 1];
-        if(dernierCharacter === undefined)
-            dernierCharacter = "";
-
-        if(dernierCharacter != "."){
-          if(dernierCharacter == "x" || dernierCharacter == "/" || dernierCharacter == "+" || dernierCharacter == "-" || dernierCharacter == ""){
-            operation += `${nombre0.value}${virgule.value}`;
+      if(verifierVirgule(operation)){
+        if(verificationOperationPrecedente !== true){
+          let dernierCharacter = operation[operation.length - 1];
+          if(dernierCharacter === undefined)
+              dernierCharacter = "";
+  
+            if(dernierCharacter == "x" || dernierCharacter == "/" || dernierCharacter == "+" || dernierCharacter == "-" || dernierCharacter == ""){
+              operation += `${nombre0.value}${virgule.value}`;
+            afficherOperation(`${virgule.value}`, operation)
+            }
+            else{
+            operation += virgule.value;
+            afficherOperation(virgule.value, operation)
+            }
+        }
+        else if(verificationOperationPrecedente === true){
+          verificationOperationPrecedente = false;
+          operation = `${nombre0.value}${virgule.value}`;
           afficherOperation(`${virgule.value}`, operation)
-          }
-          else{
-          operation += virgule.value;
-          afficherOperation(virgule.value, operation)
-          }
         }
       }
-      else if(verificationOperationPrecedente === true){
-        verificationOperationPrecedente = false;
-        operation = `${nombre0.value}${virgule.value}`;
-        afficherOperation(`${virgule.value}`, operation)
-      }
+      
     })
 
     
