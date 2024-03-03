@@ -84,22 +84,43 @@ function calculatrice(){
           let dernierCharacter = operation[operation.length - 1];
           if(dernierCharacter === undefined)
             dernierCharacter = "";
-           /*dernierCharacter == "x" || dernierCharacter == "/" */
-          if(regexOperateur1.test(dernierCharacter) && regexOperateur2.test(operateur[i].value)){
-            if(verificationOperationPrecedente === true)
+          if(regexNumber.test(dernierCharacter)){
+              if(verificationOperationPrecedente === true)
+                  verificationOperationPrecedente = false;
+  
+              operation += operateur[i].value;
+              afficherOperation(operateur[i].value, operation)
+            
+          }
+          else if(regexOperateur2.test(operateur[i].value) && operation != ""){
+            if(regexOperateur1.test(dernierCharacter)){
+              if(verificationOperationPrecedente === true)
                 verificationOperationPrecedente = false;
         
-            operation += operateur[i].value;
-            afficherOperation(operateur[i].value, operation)
-              
-          }/* dernierCharacter != "x" && dernierCharacter != "/" && dernierCharacter != "+" && dernierCharacter != "-" && dernierCharacter != "" */
-          else if(regexNumber.test(dernierCharacter)){
-            if(verificationOperationPrecedente === true)
+              operation += operateur[i].value;
+              afficherOperation(operateur[i].value, operation);
+            }
+            else if(regexOperateur2.test(dernierCharacter)){
+              if(verificationOperationPrecedente === true)
                 verificationOperationPrecedente = false;
 
-            operation += operateur[i].value;
-            afficherOperation(operateur[i].value, operation)
-                
+              operation = operation.replace(/.$/, "");
+              operation += operateur[i].value;
+              afficherOperation(operateur[i].value, operation);
+            }   
+          }
+          else if(regexOperateur1.test(operateur[i].value) && operation != ""){
+            if(regexOperateur1.test(dernierCharacter) || regexOperateur2.test(dernierCharacter)){
+              for(let i = operation.length - 1; i >= 0; i--){
+                if(regexOperateur1.test(operation[i]) || regexOperateur2.test(operation[i]))
+                  operation = operation.replace(/.$/, "");
+                else
+                  break;
+              }
+
+              operation += operateur[i].value;
+              afficherOperation(operateur[i].value, operation);
+            }
           }
           else if(operation == ""){
             if(verificationOperationPrecedente === true)
