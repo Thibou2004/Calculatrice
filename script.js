@@ -90,7 +90,7 @@ function calculatrice(){
   
               operation += operateur[i].value;
               afficherOperation(operateur[i].value, operation)
-            
+
           }
           else if(regexOperateur2.test(operateur[i].value) && operation != ""){
             if(regexOperateur1.test(dernierCharacter)){
@@ -200,6 +200,10 @@ function calculatrice(){
     entrerOperation.addEventListener("click", () => {
     try{
         if(verifierOperation(operation)){
+          let lastCharacter = operation[operation.length -1];
+          if(regexOperateur1.test(lastCharacter) || regexOperateur2.test(lastCharacter))
+            operation = operation.replace(/.$/, "");
+          
             let newOperation = operation.split('').map(x => {
                 if(x == "x")
                   return "*"
