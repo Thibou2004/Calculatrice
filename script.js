@@ -142,6 +142,19 @@ function calculatrice(){
         operation = "";
         afficherOperation(0, operation)
       })
+    
+    let delete1 = document.getElementById("delete");
+     
+      delete1.addEventListener("click", () => {
+        if(operation !== "" && verificationOperationPrecedente === false){
+          operation = operation.replace(/.$/, "");
+          let lastCharacter = operation[operation.length - 1];
+          if(lastCharacter === undefined)
+            lastCharacter = 0;
+
+          afficherOperation(lastCharacter, operation);
+        }
+      })
      
       let nombre0 = document.getElementById("nombre-0")
       let virgule = document.getElementById("virgule");

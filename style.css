@@ -2,6 +2,11 @@
     font-family: "Calculator";
     src: url("font/Calculator.ttf");
 }
+*, ::after, ::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 body{
     font-family: Arial, Helvetica, sans-serif;
@@ -10,11 +15,12 @@ body{
 
 #calculatrice{
     width: 320px;
-    height: 378px;
+    height: 380px;
     margin: 150px auto 0 auto;
     background-color: #a8a8a8;
     border-radius: 10px;
-    padding-top: 5px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     box-shadow: 3px 3px 4px rgba(49, 49, 49, 0.558);
 }
 
@@ -58,8 +64,19 @@ button{
 }
 
 button:hover{
-    box-sizing: content-box;
-    padding: 2px;
+    outline: 2px solid #c2c2c2;
+}
+
+#AC:hover, #delete:hover{
+    outline: 2px solid lightslategray;
+}
+
+.operateur:hover{
+    outline: 2px solid #2d5986;
+}
+
+#entrer-operation:hover{
+    outline: 2px solid #4d5053;
 }
 
 #virgule, .nombre, #nombre-0{
@@ -84,9 +101,12 @@ button:hover{
 
 #AC{
     background-color: lightslategray;
-    grid-column: 1 / 3;
+    grid-column: 1 / 2;
     grid-row: 1 / 2;
-    width: 95%;
+}
+
+#AC, .nombre, #nombre-0{
+    font-weight: 700;
 }
 
 #soustraction{
@@ -116,3 +136,18 @@ button:hover{
 .operateur{
     background-color: #2d5986;
 }
+
+#delete{
+    background-color: lightslategray;
+}
+
+img{
+    width: 20px;
+    height: 20px;
+ }
+ 
+ #delete img{
+    width: 30px;
+    height: 30px;
+ }
+ 
