@@ -1,153 +1,147 @@
-@font-face {
-    font-family: "Calculator";
-    src: url("font/Calculator.ttf");
-}
-*, ::after, ::before{
-    margin: 0;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+*, ::after, ::before {
+    box-sizing: border-box;
     padding: 0;
-    box-sizing: border-box;
+    margin: 0;
 }
 
-body{
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #c2c2c2;
+html, body{
+    height: 100%;
+    font-family: "Roboto";
 }
 
-#calculatrice{
-    width: 320px;
-    height: 380px;
-    margin: 150px auto 0 auto;
-    background-color: #a8a8a8;
-    border-radius: 10px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    box-shadow: 3px 3px 4px rgba(49, 49, 49, 0.558);
+body {
+    background: repeating-linear-gradient( 
+         135deg, 
+         rgb(94, 91, 91, 0.1) 0px,
+         rgba(94, 91, 91, 0.1) 2px,
+          transparent 2px,
+          transparent 4px
+    ), linear-gradient(135deg, rgb(65, 105, 225, 0.8), rgb(65, 105, 225, 1));
 }
 
+/*   calculator   */
 
-#console{
-    box-sizing: border-box;
-    width: 95%;
-    height: 80px;
-    background-color: rgb(40, 40, 40);
-    margin: 5px auto;
+.calculator {
+    background-color:  #f9f9f9;
+    max-width: 900px;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    color: #121212;
+}
+
+/* Display   */
+
+.display {
+    height: 50%;
+    padding: 0 25px;
     overflow-x: auto;
-    border-radius: 5px;
-    font-family: Calculator, "sans-serif";
-    font-weight: 500;
-    font-style: normal;
-    padding-left: 5px;
-    padding-right: 5px;
+    font-size: 3rem;
+    color: #e0e0e0;
+    overflow-y: hidden;
 }
 
-#affichage-operation{
-    width: 100%;
+.operations {
+    height: 100%;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.big-font {
+    font-size: 4rem;
+    color: #121212;
+}
+
+.operation-display {
     height: 50%;
-    white-space: nowrap;
+    text-wrap: nowrap;
 }
 
-#affichage-resultat{
-    width: 100%;
+
+.result-display {
     height: 50%;
-    white-space: nowrap;
+    text-wrap: nowrap;
 }
 
-button{
-    border-radius: 0;
+.line {
+    width: 100%;
+    height: 1px;
+    background-color: #d5d0d0;
+}
+
+/* keys */
+
+.calculator-keys {
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    border-top: 1px solid #efeff3;
+}
+
+.calculator-keys * {
     border: none;
-    font-size: 18px;
-    border-radius: 5px;
-    height: 90%;
-    width: 90%;
-    margin: auto auto;
-    box-shadow: 2px 2px 3px rgba(49, 49, 49, 0.558);
+    cursor: pointer;
+    font-size: 1.2rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #efeff3;
 }
 
-button:hover{
-    outline: 2px solid #c2c2c2;
+button:hover {
+    background-color: #d7d7e0;
 }
 
-#AC:hover, #delete:hover{
-    outline: 2px solid lightslategray;
-}
-
-.operateur:hover{
-    outline: 2px solid #2d5986;
-}
-
-#entrer-operation:hover{
-    outline: 2px solid #4d5053;
-}
-
-#virgule, .nombre, #nombre-0{
-    background-color: #c2c2c2;
+.blue-key {
+    color: rgba(65, 105, 225, 0.8);
+    font-size: 1.5rem;
 } 
 
-#touches{
-    width: 97%;
-    height: 280px;
-    margin: auto;
-    display: grid;
-    grid-template-rows: repeat(5, 1fr);
-    grid-template-columns: repeat(4, 1fr);
-    
+.blue-key:hover {
+    color: rgba(65, 105, 225, 1);
 }
 
-#affichage-resultat, #affichage-operation{
-    color: #ff944d;
-    text-align: start;
-    font-size: 1.5em;
-}
 
-#AC{
-    background-color: lightslategray;
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-}
-
-#AC, .nombre, #nombre-0{
-    font-weight: 700;
-}
-
-#soustraction{
+.soustraction, .addition {
     grid-column: 4 / 5;
-    grid-row: 2 / 3;
 }
 
-#addition{
-    grid-column: 4/ 5;
+.addition {
+    grid-row: 4 / 5;
+}
+
+.multiplication {
+    grid-row: 2 / 3;
+    grid-column: 4 / 5;
+}
+
+.soustraction {
     grid-row: 3 / 4;
 }
 
-#entrer-operation{
-    grid-column: 4 / 5;
-    grid-row: 4 / 6;
-    background-color: #4d5053;
-    height: 95%;
-}
-
-#nombre-0 {
+.number-0 {
     grid-column: 1 / 3;
-    grid-row: 5 / 6;
-    width: 95%;
 }
 
 
-.operateur{
-    background-color: #2d5986;
+.enter-operation {
+  grid-column: 4 / 5;
+  grid-row: 5 / 6;
+  background-color: rgba(65, 105, 225);
+  opacity: 0.8;
+  color: #f9f9f9;
 }
 
-#delete{
-    background-color: lightslategray;
+.enter-operation:hover {
+   background-color: rgba(65, 105, 225);
+   opacity: 1;
 }
-
-img{
-    width: 20px;
-    height: 20px;
- }
- 
- #delete img{
-    width: 30px;
-    height: 30px;
- }
- 

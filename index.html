@@ -1,43 +1,48 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculatrice</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/svg+xml" href="asset_graphique/calculate_FILL0_wght400_GRAD0_opsz24.svg">
     <script src="script.js" defer></script>
     <script src="main.js" defer></script>
-</head>
-<body>
-    <div id="calculatrice">
-      <div id="console">
-        <div id="affichage-operation"></div>
-        <div id="affichage-resultat">0</div>
+    <link rel="icon" type="image/svg+xml" href="asset_graphique/calculate_FILL0_wght400_GRAD0_opsz24.svg">
+  </head>
+  <body>
+    <div class="calculator" id="calculator">
+      <div class="display">
+        <!-- <div class="history-operation"></div> -->
+        <div class="operations">
+          <div class="operation-display flex-column big-font">0</div>
+          <div class="result-display flex-column gray">0</div>
+          <div class="line"></div>
+        </div>
       </div>
-      <div id="touches">
-        <button id="AC">AC</button>
-        <button id="delete"><img src="asset_graphique/icon_calculatrice/delete.svg" alt="delete"></button>
-        <button id="division" class="operateur" value="/"><img src="asset_graphique/icon_calculatrice/division.svg" alt="/"></button>
+        <div class="calculator-keys" id="calculator-keys">
+          <button class="AC blue-key">AC</button>
+          <button class="delete blue-key">CE</button>
+          <button class="operator modulo blue-key" value="%">%</button>
+          <button class="operator division blue-key" value="/">/</button>
 
-        <button id="multiplication" class="operateur" value="x"><img src="asset_graphique/icon_calculatrice/multiplication.svg" alt="x"></button>
-        <button id="soustraction" class="operateur" value="-"><img src="asset_graphique/icon_calculatrice/soustraction.svg" alt="-"></button>
-        <button id="addition" class="operateur" value="+"><img src="asset_graphique/icon_calculatrice/addition.svg" alt="+"></button>
-        <button id="entrer-operation" value="="><img src="asset_graphique/icon_calculatrice/equalsign.svg" alt="="></button>
+          <button class="operator multiplication blue-key" value="x">x</button>
+          <button class="operator soustraction blue-key" value="-">-</button>
+          <button class="operator addition blue-key" value="+">+</button>
+          <button class="enter-operation" value="=">=</button>
 
-        <button id="nombre-7" class="nombre" value="7">7</button>
-        <button id="nombre-8" class="nombre" value="8">8</button>
-        <button id="nombre-9" class="nombre" value="9">9</button>
-        <button id="nombre-4" class="nombre" value="4">4</button>
-        <button id="nombre-5" class="nombre" value="5">5</button>
-        <button id="nombre-6" class="nombre" value="6">6</button>
-        <button id="nombre-1" class="nombre" value="1">1</button>
-        <button id="nombre-2" class="nombre" value="2">2</button>
-        <button id="nombre-3" class="nombre" value="3">3</button>
-        <button id="nombre-0"  value="0">0</button>
-        <button id="virgule" value=".">.</button> 
+          <button class="number number-7" value="7">7</button>
+          <button class="number number-8" value="8">8</button>
+          <button class="number number-9" value="9">9</button>
+          <button class="number number-4" value="4">4</button>
+          <button class="number number-5" value="5">5</button>
+          <button class="number number-6" value="6">6</button>
+          <button class="number number-1" value="1">1</button>
+          <button class="number number-2" value="2">2</button>
+          <button class="number number-3" value="3">3</button>
 
-     </div>  
-    </div>
-</body>
+          <button class="number-0" value="0">0</button>
+          <button class="comma" value=".">,</button>
+        </div>
+      </div>
+  </body>
 </html>

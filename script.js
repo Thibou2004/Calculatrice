@@ -6,240 +6,305 @@
  * @param {string} value 
  * @param {string} operation 
  */
-function afficherOperation(value, operation){
-   let affichageOperation = document.getElementById("affichage-operation");
-   let affichageResultat = document.getElementById("affichage-resultat");
-   
+function displayOperation(value, operation){
+  let affichageOperation = document.querySelector(".operation-display");
+  let affichageResultat = document.querySelector(".result-display"); 
 
-
-   affichageResultat.innerText = value;
-   affichageOperation.innerText = operation;
-}
-
-
-
-/**
- * Cette fonction permet de vérifier si le calcul a été correctement tapé
- * @param {string} operation 
- */
-function verifierOperation(operation){
-   let newOperation = operation;
-   let expression = /^[-+]?\d+([,.]\d*)?([+\-*/]-?\d+([,.]\d+)?)*$/;
-   let regexNbScientifique = /^[-+]?\d+([,.]\d*)?([+\-*/]-?\d+([,.]\d*)?)*([eE][-+]?\d+)?$/;
-   newOperation = newOperation.split('').map(x => {
+  if(/[0-9]/.test(value) && operation !== ""){
+  let newOperation = operation.split('').map(x => {
     if(x == "x")
       return "*"
     else
       return x;
-   }).join('');
-   
-   return expression.test(newOperation) ||regexNbScientifique;
+   }).join('');  
+   affichageResultat.innerText = `= ${eval(newOperation)}`;
+  }
+  else
+  affichageResultat.innerText = value;
+  
+
+  if(operation === "")
+    affichageOperation.innerText = "0"
+  else
+    affichageOperation.innerText = operation;
+}
+
+
+/**
+* Cette fonction permet d'afficher le calcul en cours,
+* le caractère que l'utilisateur vient d'utiliser, 
+* et le résultat du calcul
+* @param {string} value 
+* @param {string} operation 
+*/
+function displayOperationSubmit(value, operation){
+let affichageOperation = document.querySelector(".operation-display");
+let affichageResultat = document.querySelector(".result-display"); 
+
+affichageOperation.innerText = value;
+affichageResultat.innerText = operation;
+}
+
+
+
+/**
+* Cette fonction permet de vérifier si le calcul a été correctement tapé
+* @param {string} operation 
+*/
+function checkOperation(operation){
+  let newOperation = operation;
+  let expression = /^[-+]?\d+([,.]\d*)?([+\-*/%]-?\d+([,.]\d+)?)*$/;
+  let scientificExpression = /^[-+]?\d+([,.]\d*)?([+\-*/%]-?\d+([,.]\d*)?)*([eE][-+]?\d+)?$/;
+  newOperation = newOperation.split('').map(x => {
+   if(x == "x")
+     return "*"
+   else
+     return x;
+  }).join('');
+  
+  return expression.test(newOperation) || scientificExpression;
 
 }
 
 /**
- * Cette fonction va permettre de vérifier lorsque l'on
- * clique sur le boutton virgule si le nombre qui est entrée
- * a déja une virgule, si c'est le cas on ajoute pas de virgule.
- * @param {string} operation
- */
-function verifierVirgule(operation){
-  let regexOperateur = /^[x+-\/]{1,1}$/;
-  let regexVirgule = /^[\.]{1,1}$/;
-  for(let i = operation.length - 1; i >= 0; i--){
-      if(regexOperateur.test(operation[i]) && !regexVirgule.test(operation[i])){
-        return true;
-      }
-      else if(regexVirgule.test(operation[i])){
-        return false;
-      }
-    }
-  return true;
+* Cette fonction va permettre de vérifier lorsque l'on
+* clique sur le boutton virgule si le nombre qui est entrée
+* a déja une virgule, si c'est le cas on ajoute pas de virgule.
+* @param {string} operation
+*/
+function checkComma(operation){
+ let regexOperateur = /^[x+-\/]{1,1}$/;
+ let regexVirgule = /^[\.]{1,1}$/;
+ for(let i = operation.length - 1; i >= 0; i--){
+     if(regexOperateur.test(operation[i]) && !regexVirgule.test(operation[i])){
+       return true;
+     }
+     else if(regexVirgule.test(operation[i])){
+       return false;
+     }
+   }
+ return true;
+}
+
+/**
+* Cette fonction va permettre de changer l'affichage des nombres sur la
+* console lorsque l'on entre une opération valide et lorsque l'on entre
+* une nouvelle opération. 
+*/
+function changeDisplay() {
+let resultDisplay = document.querySelector(".result-display");
+let operationDisplay = document.querySelector(".operation-display");
+let resultDisplayClasses = resultDisplay.classList;
+let operationDisplayClasses = operationDisplay.classList;
+
+
+operationDisplayClasses.toggle("big-font")
+resultDisplayClasses.toggle("big-font")
 }
 
 
 
 function calculatrice(){
-    let buttonNombres = document.querySelectorAll(".nombre");
-    let operation = "";
-    let verificationOperationPrecedente = false;
-    for(let i = 0; i < buttonNombres.length; i++){
-        buttonNombres[i].addEventListener("click", () => {
-            if(verificationOperationPrecedente === true){
-              operation = "";
-              verificationOperationPrecedente = false;
-            }
-            
-            operation += buttonNombres[i].value;
-            afficherOperation(buttonNombres[i].value, operation)
-        })
-    }
-    let regexNumber = /^[0-9\.]{1,1}$/;
-    let regexOperateur1 = /^[x\/]{1,1}$/;
-    let regexOperateur2 = /^[+-]{1,1}$/;
+   let NumberButton = document.querySelectorAll(".number");
+   let operation = "";
+   let checkLastOperation = false;
 
-    let operateur = document.querySelectorAll(".operateur");
-    for(let i = 0; i < operateur.length; i++){
-        operateur[i].addEventListener("click", () => {
-          let dernierCharacter = operation[operation.length - 1];
-          if(dernierCharacter === undefined)
-            dernierCharacter = "";
-          if(regexNumber.test(dernierCharacter)){
-              if(verificationOperationPrecedente === true)
-                  verificationOperationPrecedente = false;
-  
-              operation += operateur[i].value;
-              afficherOperation(operateur[i].value, operation)
+   for(let i = 0; i < NumberButton.length; i++){
+      NumberButton[i].addEventListener("click", () => {
+           if(checkLastOperation === true){
+            changeDisplay()
+             operation = "";
+             checkLastOperation = false;
+           }
+           
+           operation += NumberButton[i].value;
+           displayOperation(NumberButton[i].value, operation)
+       })
+   }
+   let regexNumber = /^[0-9\.]{1,1}$/;
+   let regexOperator1 = /^[x\/%]{1,1}$/;
+   let regexOperator2 = /^[+-]{1,1}$/;
 
-          }
-          else if(regexOperateur2.test(operateur[i].value) && operation != ""){
-            if(regexOperateur1.test(dernierCharacter)){
-              if(verificationOperationPrecedente === true)
-                verificationOperationPrecedente = false;
-        
-              operation += operateur[i].value;
-              afficherOperation(operateur[i].value, operation);
-            }
-            else if(regexOperateur2.test(dernierCharacter)){
-              if(verificationOperationPrecedente === true)
-                verificationOperationPrecedente = false;
-
-              operation = operation.replace(/.$/, "");
-              operation += operateur[i].value;
-              afficherOperation(operateur[i].value, operation);
-            }   
-          }
-          else if(regexOperateur1.test(operateur[i].value) && operation != ""){
-            if(regexOperateur1.test(dernierCharacter) || regexOperateur2.test(dernierCharacter)){
-              for(let i = operation.length - 1; i >= 0; i--){
-                if(regexOperateur1.test(operation[i]) || regexOperateur2.test(operation[i]))
-                  operation = operation.replace(/.$/, "");
-                else
-                  break;
-              }
-
-              operation += operateur[i].value;
-              afficherOperation(operateur[i].value, operation);
-            }
-          }
-          else if(operation == ""){
-            if(verificationOperationPrecedente === true)
-                verificationOperationPrecedente = false;
-  
-            operation += `0${operateur[i].value}`;
-            afficherOperation(`${operateur[i].value}`, operation)
-          }
-        });
-    }
-
-
-    let AC = document.getElementById("AC");
+   let operator = document.querySelectorAll(".operator");
+   for(let i = 0; i < operator.length; i++){
+       operator[i].addEventListener("click", () => {
+         let lastCharacter = operation[operation.length - 1];
+         if(lastCharacter === undefined)
+           lastCharacter = "";
+         if(regexNumber.test(lastCharacter)){
+             if(checkLastOperation === true){
+                 changeDisplay()
+                 checkLastOperation = false;
+             }
  
-      AC.addEventListener("click", () => {
-        if(verificationOperationPrecedente === true)
-            verificationOperationPrecedente = false;
+             operation += operator[i].value;
+             displayOperation(operator[i].value, operation)
 
-        operation = "";
-        afficherOperation(0, operation)
-      })
-    
-    let delete1 = document.getElementById("delete");
-     
-      delete1.addEventListener("click", () => {
-        if(operation !== "" && verificationOperationPrecedente === false){
-          operation = operation.replace(/.$/, "");
-          let lastCharacter = operation[operation.length - 1];
-          if(lastCharacter === undefined)
-            lastCharacter = 0;
+         }
+         else if(regexOperator2.test(operator[i].value) && operation != ""){
+          if(regexOperator1.test(lastCharacter)){
+             if(checkLastOperation === true){
+               changeDisplay()
+               checkLastOperation = false;
+             }
+             operation += operator[i].value;
+             displayOperation(operator[i].value, operation);
+           }
+           else if(regexOperator2.test(lastCharacter)){
+             if(checkLastOperation === true){
+               changeDisplay()
+               checkLastOperation = false;
+             }
 
-          afficherOperation(lastCharacter, operation);
-        }
-      })
-     
-      let nombre0 = document.getElementById("nombre-0")
-      let virgule = document.getElementById("virgule");
-
-    virgule.addEventListener("click", () => {
-      if(verifierVirgule(operation)){
-        if(verificationOperationPrecedente !== true){
-          let dernierCharacter = operation[operation.length - 1];
-          if(dernierCharacter === undefined)
-              dernierCharacter = "";
-  
-            if(dernierCharacter == "x" || dernierCharacter == "/" || dernierCharacter == "+" || dernierCharacter == "-" || dernierCharacter == ""){
-              operation += `${nombre0.value}${virgule.value}`;
-            afficherOperation(`${virgule.value}`, operation)
-            }
-            else{
-            operation += virgule.value;
-            afficherOperation(virgule.value, operation)
-            }
-        }
-        else if(verificationOperationPrecedente === true){
-          verificationOperationPrecedente = false;
-          operation = `${nombre0.value}${virgule.value}`;
-          afficherOperation(`${virgule.value}`, operation)
-        }
-      }
-      
-    })
-
-    
-
-    
-    nombre0.addEventListener("click", () => {
-      let dernierCharacter = operation[operation.length - 1];
-          if(dernierCharacter === undefined)
-            dernierCharacter = "";
-          
-          if(verificationOperationPrecedente === true){
-            operation = "0";
-            verificationOperationPrecedente = false;
-            afficherOperation("0", operation)
+             operation = operation.replace(/.$/, "");
+             operation += operator[i].value;
+             displayOperation(operator[i].value, operation);
+           }   
+         }
+         else if(regexOperator1.test(operator[i].value) && operation != ""){
+          if(checkLastOperation === true){
+            changeDisplay()
+            checkLastOperation = false;
           }
-          else if(dernierCharacter == "x" || dernierCharacter == "/" || dernierCharacter == "+" || dernierCharacter == "-" || dernierCharacter == ""){
-            operation += `${nombre0.value}${virgule.value}`;
-            afficherOperation(`${nombre0.value}`, operation);
-          }  
-          else if(operation != "0"){
-            operation += "0";
-            afficherOperation("0", operation)
-          }
-        
-    })
+           if(regexOperator1.test(lastCharacter) || regexOperator2.test(lastCharacter)){
+             for(let i = operation.length - 1; i >= 0; i--){
+               if(regexOperator1.test(operation[i]) || regexOperator2.test(operation[i]))
+                 operation = operation.replace(/.$/, "");
+               else
+                 break;
+             }
 
-    let entrerOperation = document.getElementById("entrer-operation");
+             operation += operator[i].value;
+             displayOperation(operator[i].value, operation);
+           }
+         }
+         else if(operation == ""){
+           if(checkLastOperation === true){
+               changeDisplay()
+               checkLastOperation = false;
+           }
+           operation += `0${operator[i].value}`;
+           displayOperation(`${operator[i].value}`, operation)
+         }
+       });
+   }
 
-    entrerOperation.addEventListener("click", () => {
-    try{
-        if(verifierOperation(operation)){
-          let lastCharacter = operation[operation.length -1];
-          if(regexOperateur1.test(lastCharacter) || regexOperateur2.test(lastCharacter))
-            operation = operation.replace(/.$/, "");
-          
-            let newOperation = operation.split('').map(x => {
-                if(x == "x")
-                  return "*"
-                else
-                  return x;
-               }).join('');
 
-            afficherOperation(eval(newOperation), `${operation}=${eval(newOperation)}`)
-            operation = `${eval(newOperation)}`;
-            verificationOperationPrecedente = true;
-        }
-        else{
-            afficherOperation("ERREUR", "ERREUR")
-            operation = "";
-        }
-    }
-    catch{
-        afficherOperation("ERREUR", "ERREUR")
-        operation = "";
-    }
-    })
+   let AC = document.querySelector(".AC");
+
+     AC.addEventListener("click", () => {
+       if(checkLastOperation === true){
+           changeDisplay()
+           checkLastOperation = false;
+       }
+
+       operation = "";
+       displayOperation(0, operation)
+     })
+   
+   let deleteCharacter = document.querySelector(".delete");
+    
+     deleteCharacter.addEventListener("click", () => {
+       if(operation !== "" && checkLastOperation === false){
+         operation = operation.replace(/.$/, "");
+         let lastCharacter = operation[operation.length - 1];
+         if(lastCharacter === undefined)
+           lastCharacter = 0;
+
+         displayOperation(lastCharacter, operation);
+       }
+     })
+    
+     let number0 = document.querySelector(".number-0")
+     let comma = document.querySelector(".comma");
+
+   comma.addEventListener("click", () => {
+     if(checkComma(operation)){
+       if(checkLastOperation !== true){
+         let dernierCharacter = operation[operation.length - 1];
+         if(dernierCharacter === undefined)
+             dernierCharacter = "";
+ 
+           if(dernierCharacter == "x" || dernierCharacter == "/" || dernierCharacter == "+" || dernierCharacter == "-" || dernierCharacter == ""){
+             operation += `${number0.value}${comma.value}`;
+           displayOperation(`${comma.value}`, operation)
+           }
+           else{
+           operation += comma.value;
+           displayOperation(comma.value, operation)
+           }
+       }
+       else if(checkLastOperation === true){
+         changeDisplay()
+         checkLastOperation = false;
+         operation = `${number0.value}${comma.value}`;
+         displayOperation(`${comma.value}`, operation)
+       }
+     }
+     
+   })
+
+   
+
+   
+   number0.addEventListener("click", () => {
+     let dernierCharacter = operation[operation.length - 1];
+         if(dernierCharacter === undefined)
+           dernierCharacter = "";
+         
+         if(checkLastOperation === true){
+           changeDisplay()
+           operation = "0";
+           checkLastOperation = false;
+           displayOperation("0", operation)
+         }
+         else if(regexOperator1.test(dernierCharacter) || regexOperator2.test(dernierCharacter)){
+           operation += `${number0.value}${comma.value}`;
+           displayOperation(`${number0.value}`, operation);
+           console.log("0")
+         }  
+         else if(dernierCharacter != "0" && operation !== ""){
+           operation += "0";
+           displayOperation("0", operation)
+           console.log("02")
+         }
+       
+   })
+
+   
+   let enterOperation = document.querySelector(".enter-operation");
+   
+   enterOperation.addEventListener("click", () => {
+   try{
+       if(checkOperation(operation)){
+         let lastCharacter = operation[operation.length -1];
+         if(regexOperator1.test(lastCharacter) || regexOperator2.test(lastCharacter))
+           operation = operation.replace(/.$/, "");
+         
+           let newOperation = operation.split('').map(x => {
+               if(x == "x")
+                 return "*"
+               else
+                 return x;
+              }).join('');
+           
+           changeDisplay()
+
+           displayOperationSubmit(operation, `= ${eval(newOperation)}`)
+           operation = `${eval(newOperation)}`;
+           checkLastOperation = true;
+       }
+       else{
+           displayOperationSubmit("ERREUR", "ERREUR")
+           operation = "";
+       }
+   }
+   catch{
+       displayOperationSubmit("ERREUR", "ERREUR")
+       operation = "";
+   }
+   })
 }
-
 
 
 
