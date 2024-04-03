@@ -6,4 +6,5 @@ C'est une simple calculatrice réalisée en JavaScript. Elle peut effectuer des 
 ## Installation
 Vous pouvez copier le dossier (si vous avez installé git) depuis votre terminal avec la commande suivante:
 git clone https://github.com/Thibou2004/Calculatrice
+
 Ensuite vous pouvez ouvrir le fichier 'index.html' dans votre navigateur.
