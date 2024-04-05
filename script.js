@@ -224,7 +224,7 @@ function calculatrice(){
         displayOperation(operation[operation.length - 1], operation)
       else if(operation.length == 0)
         displayOperation(0, operation)
-      
+
       }
     }/*--------------------DotBtn------------------------- */
     else if(target === "."){
@@ -251,9 +251,15 @@ function calculatrice(){
           displayOperationSubmit(0, 0)
         }
         else if(checkOperation(operation)  && checkLastOperation === false){
-          if(regexOperator.test(lastCharacter))
-            operation = operation.replace(/.$/, "");
+          if(regexOperator.test(lastCharacter)){
+            for(let i = operation.length - 1; i >= 0; i--){
+              if(regexOperator.test(operation[i]))
+                operation = operation.replace(/.$/, "")
+              else
+                break
+            }
           
+          }
             let newOperation = operation.split('').map(x => {
                 if(x == "x")
                   return "*"
