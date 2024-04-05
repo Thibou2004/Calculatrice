@@ -105,207 +105,177 @@ resultDisplayClasses.toggle("fontGrowActive")
 
 
 function calculatrice(){
-   let NumberButton = document.querySelectorAll(".number");
+   const calculatorKeys = document.querySelector(".calculator-keys");
    let operation = "";
    let checkLastOperation = false;
 
-   for(let i = 0; i < NumberButton.length; i++){
-      NumberButton[i].addEventListener("click", () => {
-           if(checkLastOperation === true){
-            changeDisplay()
-             operation = "";
-             checkLastOperation = false;
-           }
-           
-           operation += NumberButton[i].value;
-           displayOperation(NumberButton[i].value, operation)
-       })
-   }
-   let regexNumber = /^[0-9\.]{1,1}$/;
-   let regexOperator1 = /^[x\/%]{1,1}$/;
-   let regexOperator2 = /^[+-]{1,1}$/;
 
-   let operator = document.querySelectorAll(".operator");
-   for(let i = 0; i < operator.length; i++){
-       operator[i].addEventListener("click", () => {
-         let lastCharacter = operation[operation.length - 1];
-         if(lastCharacter === undefined)
-           lastCharacter = "";
-         if(regexNumber.test(lastCharacter)){
-             if(checkLastOperation === true){
-                 changeDisplay()
-                 checkLastOperation = false;
-             }
- 
-             operation += operator[i].value;
-             displayOperation(operator[i].value, operation)
+   calculatorKeys.addEventListener("click", handleNumber)
 
-         }
-         else if(regexOperator2.test(operator[i].value) && operation != ""){
-          if(regexOperator1.test(lastCharacter)){
-             if(checkLastOperation === true){
-               changeDisplay()
-               checkLastOperation = false;
-             }
-             operation += operator[i].value;
-             displayOperation(operator[i].value, operation);
-           }
-           else if(regexOperator2.test(lastCharacter)){
-             if(checkLastOperation === true){
-               changeDisplay()
-               checkLastOperation = false;
-             }
+   function handleNumber(event) {
+    let regexNumber = /^[0-9]{1,1}$/;
+    let regexOperator1 = /^[x\/%]{1,1}$/;
+    let regexOperator2 = /^[+-]{1,1}$/;
+    let regexOperator = /^[x\/%+-]$/;
 
-             operation = operation.replace(/.$/, "");
-             operation += operator[i].value;
-             displayOperation(operator[i].value, operation);
-           }   
-         }
-         else if(regexOperator1.test(operator[i].value) && operation != ""){
-          if(checkLastOperation === true){
-            changeDisplay()
-            checkLastOperation = false;
-          }
-           if(regexOperator1.test(lastCharacter) || regexOperator2.test(lastCharacter)){
-             for(let i = operation.length - 1; i >= 0; i--){
-               if(regexOperator1.test(operation[i]) || regexOperator2.test(operation[i]))
-                 operation = operation.replace(/.$/, "");
-               else
-                 break;
-             }
+    let lastCharacter = operation[operation.length - 1];
+    if(lastCharacter === undefined)
+        lastCharacter = "";
 
-             operation += operator[i].value;
-             displayOperation(operator[i].value, operation);
-           }
-         }
-         else if(operation == ""){
-           if(checkLastOperation === true){
-               changeDisplay()
-               checkLastOperation = false;
-           }
-           operation += `0${operator[i].value}`;
-           displayOperation(`${operator[i].value}`, operation)
-         }
-       });
-   }
-
-
-   let AC = document.querySelector(".AC");
-
-     AC.addEventListener("click", () => {
-       if(checkLastOperation === true){
-           changeDisplay()
-           checkLastOperation = false;
-       }
-
-       operation = "";
-       displayOperation(0, operation)
-     })
-   
-   let deleteCharacter = document.querySelector(".delete");
-    
-     deleteCharacter.addEventListener("click", () => {
-       if(operation !== "" && checkLastOperation === false){
-         operation = operation.replace(/.$/, "");
-         let lastCharacter = operation[operation.length - 1];
-         if(lastCharacter === undefined)
-           lastCharacter = 0;
-
-         displayOperation(lastCharacter, operation);
-       }
-     })
-    
-     let number0 = document.querySelector(".number-0")
-     let comma = document.querySelector(".comma");
-
-   comma.addEventListener("click", () => {
-     if(checkComma(operation)){
-       if(checkLastOperation !== true){
-         let dernierCharacter = operation[operation.length - 1];
-         if(dernierCharacter === undefined)
-             dernierCharacter = "";
- 
-           if(dernierCharacter == "x" || dernierCharacter == "/" || dernierCharacter == "+" || dernierCharacter == "-" || dernierCharacter == ""){
-             operation += `${number0.value}${comma.value}`;
-           displayOperation(`${comma.value}`, operation)
-           }
-           else{
-           operation += comma.value;
-           displayOperation(comma.value, operation)
-           }
-       }
-       else if(checkLastOperation === true){
-         changeDisplay()
-         checkLastOperation = false;
-         operation = `${number0.value}${comma.value}`;
-         displayOperation(`${comma.value}`, operation)
-       }
-     }
-     
-   })
-
-   
-
-   
-   number0.addEventListener("click", () => {
-     let dernierCharacter = operation[operation.length - 1];
-         if(dernierCharacter === undefined)
-           dernierCharacter = "";
-         
-         if(checkLastOperation === true){
-           changeDisplay()
-           operation = "0";
-           checkLastOperation = false;
-           displayOperation("0", operation)
-         }
-         else if(regexOperator1.test(dernierCharacter) || regexOperator2.test(dernierCharacter)){
-           operation += `${number0.value}${comma.value}`;
-           displayOperation(`${number0.value}`, operation);
-           console.log("0")
-         }  
-         else if(dernierCharacter != "0" && operation !== ""){
-           operation += "0";
-           displayOperation("0", operation)
-           console.log("02")
-         }
-       
-   })
-
-   
-   let enterOperation = document.querySelector(".enter-operation");
-   
-   enterOperation.addEventListener("click", () => {
-   try{
-       if(checkOperation(operation)){
-         let lastCharacter = operation[operation.length -1];
-         if(regexOperator1.test(lastCharacter) || regexOperator2.test(lastCharacter))
-           operation = operation.replace(/.$/, "");
-         
-           let newOperation = operation.split('').map(x => {
-               if(x == "x")
-                 return "*"
-               else
-                 return x;
-              }).join('');
-           
-           changeDisplay()
-
-           displayOperationSubmit(operation, `= ${eval(newOperation)}`)
-           operation = `${eval(newOperation)}`;
-           checkLastOperation = true;
-       }
-       else{
-           displayOperationSubmit("ERREUR", "ERREUR")
+    const target = event.target.value
+    /*---------- NUMBER ----------------------*/
+    if(regexNumber.test(target)){
+      if(target === "0"){
+        if(checkLastOperation === true){
+          changeDisplay()
            operation = "";
-       }
-   }
-   catch{
-       displayOperationSubmit("ERREUR", "ERREUR")
-       operation = "";
-   }
-   })
-}
+           checkLastOperation = false;
+           displayOperation(target, operation)
+         }
+        else if(regexOperator.test(lastCharacter)){
+          operation += `${target}.`;
+          displayOperation(target, operation);
+        }  
+        else if(operation !== ""){
+        operation += "0";
+        displayOperation("0", operation)
+        }
+      }
+      else{
+        if(checkLastOperation === true){
+          changeDisplay()
+           operation = "";
+           checkLastOperation = false;
+         }
+        operation += target;
+        displayOperation(target, operation)
+      }
+    }/*------------ OPERATOR --------------------*/
+    else if(regexOperator.test(target)){
 
+          if(checkLastOperation){
+          //On test si une opération vient d'être validé
+            operation += target
+            changeDisplay()
+            checkLastOperation = false
+            displayOperation(target, operation)
 
+          }
+          else if(regexOperator.test(lastCharacter)){
+          // On test si le dernier character est un opérateur
+            if(regexOperator2.test(target)){
+            // On test si l'opérateur sélectionné est un - ou un +
+             if(regexOperator2.test(lastCharacter))
+              operation = operation.replace(/.$/, target)
+             else if(regexOperator1.test(lastCharacter))
+              operation += target
+              
+              displayOperation(target, operation)
+            }
+            else if(regexOperator1.test(target)){
+            // On test si l'opérateur sélectionné est un x, % ou /
+              for(let i = operation.length - 1; i >= 0; i--){
+                if(regexOperator.test(operation[i]))
+                  operation = operation.replace(/.$/, "")
+                else
+                  break
+              }
+              operation += target
+              displayOperation(target, operation)
+            }
+          }
+          else if(operation === ""){
+            // On test si l'opération est égal à nul
+            if(target !== "%"){
+              operation += `0${target}`
+              displayOperation(target, operation)
+            }
+          }
+          else if(regexNumber.test(lastCharacter) || /./.test(lastCharacter)){
+            operation += target
+            displayOperation(target, operation)
+          }
+    }/*--------------------AC------------------------ */
+    else if(target === "AC"){
+      if(checkLastOperation === true){
+        changeDisplay()
+        checkLastOperation = false;
+      }
 
+      operation = "";
+      displayOperation(0, operation)
+    }/*-------------------CE---------------------------- */
+    else if(target === "CE"){
+      if(operation !== "" && checkLastOperation === false){
 
+        operation = operation.replace(/.$/, "");
+
+      if(regexOperator.test(operation[operation.length - 1])){
+        let copyOperation = operation
+        for(let i = copyOperation.length - 1; i >= 0 ; i--){
+         if(regexOperator.test(copyOperation[i]))
+           copyOperation.replace(/.$/, "")
+         else
+           break
+        }
+        displayOperation(operation[operation.length - 1], copyOperation)
+      }
+      else if(operation.length > 0)
+        displayOperation(operation[operation.length - 1], operation)
+      else if(operation.length == 0)
+        displayOperation(0, operation)
+      
+      }
+    }/*--------------------DotBtn------------------------- */
+    else if(target === "."){
+      if(checkComma(operation)){
+        if(checkLastOperation){
+          changeDisplay()
+          checkLastOperation = false;
+          operation = `0${target}`
+          displayOperation(target, operation)
+        }
+        else if(regexOperator.test(lastCharacter) || operation === ""){
+          operation += `0${target}`
+          displayOperation(target, operation)
+        }
+        else if(regexNumber.test(lastCharacter)){
+          operation += target
+          displayOperation(target, operation)
+        }
+      }
+    }/*----------------------EnterOperation------------- */
+    else if(target === "="){
+      try{
+        if(operation === ""){
+          displayOperationSubmit(0, 0)
+        }
+        else if(checkOperation(operation)  && checkLastOperation === false){
+          if(regexOperator.test(lastCharacter))
+            operation = operation.replace(/.$/, "");
+          
+            let newOperation = operation.split('').map(x => {
+                if(x == "x")
+                  return "*"
+                else
+                  return x;
+               }).join('');
+            
+            changeDisplay()
+ 
+            displayOperationSubmit(operation, `= ${eval(newOperation)}`)
+            operation = `${eval(newOperation)}`;
+            checkLastOperation = true;
+        }
+        else if(checkLastOperation === false){
+            displayOperationSubmit("ERREUR", "ERREUR")
+            operation = "";
+        }
+      }
+    catch{
+        displayOperationSubmit("ERREUR", "ERREUR")
+        operation = "";
+      }
+    }
+  }
+ }
