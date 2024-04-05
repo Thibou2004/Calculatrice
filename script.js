@@ -98,8 +98,8 @@ let resultDisplayClasses = resultDisplay.classList;
 let operationDisplayClasses = operationDisplay.classList;
 
 
-operationDisplayClasses.toggle("big-font")
-resultDisplayClasses.toggle("big-font")
+operationDisplayClasses.toggle("fontShrinkActive")
+resultDisplayClasses.toggle("fontGrowActive")
 }
 
 
